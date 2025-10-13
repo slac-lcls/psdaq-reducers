@@ -1,0 +1,6 @@
+[submodule "lc/LC-framework"]
+	path = lc/LC-framework
+	url = https://github.com/burtscher/LC-framework.git
+[submodule "pfpl/PFPL"]
+	path = pfpl/PFPL
+	url = https://github.com/burtscher/PFPL
