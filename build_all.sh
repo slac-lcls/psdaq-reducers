@@ -8,13 +8,15 @@ export INSTDIR=`pwd`/install
 cmake_option="RelWithDebInfo"
 force_clean=0
 
-while getopts "c:p:s:b:fdam" opt; do
+while getopts "c:f" opt; do
   case $opt in
     c) cmake_option="$OPTARG"
     ;;
     f) force_clean=1                       # Force clean is required building between rhel6&7
     ;;
-    \?) echo "Invalid option -$OPTARG" >&2
+    \?) echo "Usage: ${BASH_SOURCE[0]} [-c {Release, Debug, RelWithDebInfo}] [-f]"
+        echo "  -c  Build type"
+        echo "  -f  Force clean before building"
         exit 1
     ;;
   esac
@@ -24,9 +26,14 @@ echo "CMAKE_BUILD_TYPE:" $cmake_option
 
 if [ $force_clean == 1 ]; then
     echo "force_clean"
-    if [ -d app/build ]; then
-        rm -rf app/build
-    fi
+    for entry in `ls -d */build`; do
+        if [ -d $entry ]; then
+            echo "rm -rf $entry"
+            rm -rf $entry
+        fi
+    done
+    echo "rm -rf $INSTDIR"
+    rm -rf $INSTDIR
 fi
 
 function cmake_build() {
@@ -39,8 +46,7 @@ function cmake_build() {
     cd ../..
 }
 
-cmake_build lc
-cmake_build pfpl
+cmake_build lc -DCMAKE_CUDA_ARCHITECTURES="86"
+cmake_build pfpl -DCMAKE_CUDA_ARCHITECTURES="86"
 cmake_build cuSZ -DPSZ_BACKEND=cuda -DPSZ_BUILD_EXAMPLES=on -DCMAKE_CUDA_ARCHITECTURES="86"
-cmake_build cuSZp
-
+cmake_build cuSZp -DCMAKE_CUDA_ARCHITECTURES="86"
