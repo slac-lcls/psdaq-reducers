@@ -41,6 +41,6 @@ function cmake_build() {
 
 cmake_build lc
 cmake_build pfpl
-#cmake_build_cuSZ
-#cmake_build_cuSZp
+cmake_build cuSZ -DPSZ_BACKEND=cuda -DPSZ_BUILD_EXAMPLES=on -DCMAKE_CUDA_ARCHITECTURES="86"
+cmake_build cuSZp
 

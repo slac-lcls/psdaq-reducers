@@ -4,3 +4,9 @@
 [submodule "pfpl/PFPL"]
 	path = pfpl/PFPL
 	url = https://github.com/burtscher/PFPL
+[submodule "cuSZ"]
+	path = cuSZ
+	url = https://github.com/szcompressor/cuSZ.git
+[submodule "cuSZp"]
+	path = cuSZp
+	url = https://github.com/szcompressor/cuSZp.git
