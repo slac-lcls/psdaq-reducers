@@ -45,18 +45,16 @@ add_library(pfpl_shared SHARED ${pfpl_SOURCES})
 
 # Include directories for both libraries
 target_include_directories(pfpl_static
-    PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/app
+    PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/PFPL/src
     PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/app>
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/PFPL/src>
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
 target_include_directories(pfpl_shared
-    PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/app
+    PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/PFPL/src
     PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/app>
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/PFPL/src>
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 

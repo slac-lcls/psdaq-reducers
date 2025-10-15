@@ -45,18 +45,16 @@ add_library(lc_shared SHARED ${LC_SOURCES})
 
 # Include directories for both libraries
 target_include_directories(lc_static
-    PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/app
+    PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/LC-framework
     PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/app>
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/LC-framework>
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
 target_include_directories(lc_shared
-    PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/app
+    PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/LC-framework
     PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/app>
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/LC-framework>
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 

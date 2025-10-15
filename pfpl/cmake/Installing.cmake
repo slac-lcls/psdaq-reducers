@@ -10,7 +10,7 @@ endif()
 
 # Install public headers in the include directory
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/app/f32_abs_comp_gpu.hh
-    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/pfpl
 )
 
 # These headers are internal only so we don't install them
@@ -54,15 +54,15 @@ install(EXPORT PFPLTargets
 include(CMakePackageConfigHelpers)
 
 # Generate and install version and config files
+configure_package_config_file(${CMAKE_CURRENT_SOURCE_DIR}/Config.cmake.in
+        "${CMAKE_CURRENT_BINARY_DIR}/PFPLConfig.cmake"
+        INSTALL_DESTINATION cmake
+)
+
 write_basic_package_version_file(
         "${CMAKE_CURRENT_BINARY_DIR}/PFPLConfigVersion.cmake"
         VERSION "${PROJECT_VERSION}"
         COMPATIBILITY AnyNewerVersion
-)
-
-configure_package_config_file(${CMAKE_CURRENT_SOURCE_DIR}/Config.cmake.in
-        "${CMAKE_CURRENT_BINARY_DIR}/PFPLConfig.cmake"
-        INSTALL_DESTINATION cmake
 )
 
 install(FILES
