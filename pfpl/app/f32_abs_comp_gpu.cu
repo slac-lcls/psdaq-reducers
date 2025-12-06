@@ -378,7 +378,7 @@ void PFPL_Compressor::_initialize(size_t insize)
   CheckCuda(__LINE__);
 
   if (_threshold < std::numeric_limits<float>::min()) {
-    printf("ERROR: threshold must be a positive, normal, floating-point value\n");
+    fprintf(stderr, "ERROR: threshold must be a positive, normal, floating-point value\n");
     throw std::runtime_error("PFPL error");
   }
 }
