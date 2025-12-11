@@ -63,12 +63,13 @@ target_link_libraries(pfpl_static PRIVATE CUDA::cudart)
 target_link_libraries(pfpl_shared PRIVATE CUDA::cudart)
 
 # Set output name for libraries
-set_target_properties(pfpl_static PROPERTIES OUTPUT_NAME pfpl)
-set_target_properties(pfpl_shared PROPERTIES OUTPUT_NAME pfpl)
-
-# Headers for installation
-set(public_headers
-    app/f32_abs_comp_gpu.hh
+set_target_properties(pfpl_static PROPERTIES
+    PUBLIC_HEADER app/f32_abs_comp_gpu.hh
+    OUTPUT_NAME pfpl
+)
+set_target_properties(pfpl_shared PROPERTIES
+    PUBLIC_HEADER app/f32_abs_comp_gpu.hh
+    OUTPUT_NAME pfpl
 )
 
 ## Optionally build examples

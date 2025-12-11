@@ -8,45 +8,17 @@ else()
     message(STATUS "CMAKE_INSTALL_PREFIX set to ${CMAKE_INSTALL_PREFIX}")
 endif()
 
-# Install public headers in the include directory
-install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/app/f32_abs_comp_gpu.hh
-    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/pfpl
-)
-
-# These headers are internal only so we don't install them
-## **Gather all .h files from PFPL/** and install them
-#file(GLOB pfpl_inc_headers
-#    ${CMAKE_CURRENT_SOURCE_DIR}/PFPL/src/include/*.h
-#)
-#file(GLOB pfpl_comp_headers
-#    ${CMAKE_CURRENT_SOURCE_DIR}/PFPL/src/components/*.h
-#)
-#
-## Install the pfpl headers into include/pfpl directory
-#install(FILES ${pfpl_inc_headers}
-#    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/pfpl/include
-#)
-#install(FILES ${pfpl_comp_headers}
-#    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/pfpl/components
-#)
-
-# Install shared library and headers
-install(TARGETS pfpl_shared
+# Install libraries and headers
+install(TARGETS pfpl_shared pfpl_static
         EXPORT PFPLTargets
-        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}    # for executables
-        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}    # for shared libraries
-        PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}  # for public headers
-)
-
-# Install static library without headers to avoid duplication
-install(TARGETS pfpl_static
-        EXPORT PFPLTargets
-        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}    # for static libraries
+        LIBRARY       DESTINATION ${CMAKE_INSTALL_LIBDIR}           # for shared libraries
+        ARCHIVE       DESTINATION ${CMAKE_INSTALL_LIBDIR}           # for static libraries
+        RUNTIME       DESTINATION ${CMAKE_INSTALL_BINDIR}           # for executables
+        PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/pfpl  # for public headers
 )
 
 # Generate and install export file only once
 install(EXPORT PFPLTargets
-        FILE PFPLTargets.cmake
         NAMESPACE PFPL::
         DESTINATION cmake
 )
@@ -71,8 +43,19 @@ install(FILES
         DESTINATION cmake
 )
 
-# Export the build tree
-export(EXPORT PFPLTargets
-        FILE "${CMAKE_CURRENT_BINARY_DIR}/cmake/PFPLTargets.cmake"
-        NAMESPACE PFPL::
-)
+# These headers are internal only so we don't install them
+## **Gather all .h files from PFPL/** and install them
+#file(GLOB pfpl_inc_headers
+#    ${CMAKE_CURRENT_SOURCE_DIR}/PFPL/src/include/*.h
+#)
+#file(GLOB pfpl_comp_headers
+#    ${CMAKE_CURRENT_SOURCE_DIR}/PFPL/src/components/*.h
+#)
+#
+## Install the pfpl headers into include/pfpl directory
+#install(FILES ${pfpl_inc_headers}
+#    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/pfpl/include
+#)
+#install(FILES ${pfpl_comp_headers}
+#    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/pfpl/components
+#)

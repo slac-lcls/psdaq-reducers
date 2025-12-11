@@ -8,45 +8,17 @@ else()
     message(STATUS "CMAKE_INSTALL_PREFIX set to ${CMAKE_INSTALL_PREFIX}")
 endif()
 
-# Install public headers in the include directory
-install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/app/lc-compressor-QUANT_ABS_0_f32-BIT_4-RZE_1.hh
-    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lc
-)
-
-# These headers are internal only so we don't install them
-## **Gather all .h files from LC-framework/** and install them
-#file(GLOB lc_inc_headers
-#    ${CMAKE_CURRENT_SOURCE_DIR}/LC-framework/include/*.h
-#)
-#file(GLOB ld_comp_headers
-#    ${CMAKE_CURRENT_SOURCE_DIR}/LC-framework/components/*.h
-#)
-#
-## Install the lc headers into include/lc directory
-#install(FILES ${lc_inc_headers}
-#    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lc/include
-#)
-#install(FILES ${lc_comp_headers}
-#    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lc/components
-#)
-
-# Install shared library and headers
-install(TARGETS lc_shared
+# Install libraries and headers
+install(TARGETS lc_shared lc_static
         EXPORT LCTargets
-        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}    # for executables
-        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}    # for shared libraries
-        PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}  # for public headers
-)
-
-# Install static library without headers to avoid duplication
-install(TARGETS lc_static
-        EXPORT LCTargets
-        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}    # for static libraries
+        LIBRARY       DESTINATION ${CMAKE_INSTALL_LIBDIR}         # for shared libraries
+        ARCHIVE       DESTINATION ${CMAKE_INSTALL_LIBDIR}         # for static libraries
+        RUNTIME       DESTINATION ${CMAKE_INSTALL_BINDIR}         # for executables
+        PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lc  # for public headers
 )
 
 # Generate and install export file only once
 install(EXPORT LCTargets
-        FILE LCTargets.cmake
         NAMESPACE LC::
         DESTINATION cmake
 )
@@ -71,8 +43,19 @@ install(FILES
         DESTINATION cmake
 )
 
-# Export the build tree
-export(EXPORT LCTargets
-        FILE "${CMAKE_CURRENT_BINARY_DIR}/cmake/LCTargets.cmake"
-        NAMESPACE LC::
-)
+# These headers are internal only so we don't install them
+## **Gather all .h files from LC-framework/** and install them
+#file(GLOB lc_inc_headers
+#    ${CMAKE_CURRENT_SOURCE_DIR}/LC-framework/include/*.h
+#)
+#file(GLOB ld_comp_headers
+#    ${CMAKE_CURRENT_SOURCE_DIR}/LC-framework/components/*.h
+#)
+#
+## Install the lc headers into include/lc directory
+#install(FILES ${lc_inc_headers}
+#    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lc/include
+#)
+#install(FILES ${lc_comp_headers}
+#    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lc/components
+#)

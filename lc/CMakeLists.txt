@@ -63,12 +63,13 @@ target_link_libraries(lc_static PRIVATE CUDA::cudart CUDA::cuda_driver)
 target_link_libraries(lc_shared PRIVATE CUDA::cudart CUDA::cuda_driver)
 
 # Set output name for libraries
-set_target_properties(lc_static PROPERTIES OUTPUT_NAME lc)
-set_target_properties(lc_shared PROPERTIES OUTPUT_NAME lc)
-
-# Headers for installation
-set(public_headers
-    app/lc-compressor-QUANT_ABS_0_f32-BIT_4-RZE_1.hh
+set_target_properties(lc_static PROPERTIES
+    PUBLIC_HEADER app/lc-compressor-QUANT_ABS_0_f32-BIT_4-RZE_1.hh
+    OUTPUT_NAME lc
+)
+set_target_properties(lc_shared PROPERTIES
+    PUBLIC_HEADER app/lc-compressor-QUANT_ABS_0_f32-BIT_4-RZE_1.hh
+    OUTPUT_NAME lc
 )
 
 ## Optionally build examples
