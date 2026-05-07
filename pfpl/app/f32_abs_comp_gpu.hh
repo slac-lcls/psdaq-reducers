@@ -13,11 +13,12 @@ public:
   void banner() const;
   long long maxSize() const { return _maxsize; }
   void updateGraph(cudaStream_t      stream,
-                   const unsigned&   index,
+                   unsigned*   const state_d,
+                   unsigned*   const index_d,
                    byte const* const d_input_base,
-                   const long long   inBufSize,
-                   byte* const       d_encoded_base,
-                   const long long   encBufSize);
+                   long long   const inBufSize,
+                   byte*       const d_encoded_base,
+                   long long   const encBufSize);
 private:
   void _initialize(size_t insize);
 private:

@@ -10,3 +10,6 @@
 [submodule "cuSZp"]
 	path = cuSZp
 	url = https://github.com/szcompressor/cuSZp.git
+[submodule "sleek/SLEEK"]
+	path = sleek/SLEEK
+	url = https://github.com/burtscher/SLEEK

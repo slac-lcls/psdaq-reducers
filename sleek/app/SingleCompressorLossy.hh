@@ -1,13 +1,13 @@
 #pragma once
 
-namespace LC_framework {
+namespace SLEEK {
 
-class LC_Compressor
+class SingleCompressorLossy
 {
   using byte = unsigned char;
 public:
-  LC_Compressor(size_t insize, double paramv);
-  ~LC_Compressor();
+  SingleCompressorLossy(size_t insize, float errorbound);
+  ~SingleCompressorLossy();
 
   void banner() const;
   long long maxSize() const { return _maxsize; }
@@ -15,15 +15,19 @@ public:
                    unsigned*   const state_d,
                    unsigned*   const index_d,
                    byte const* const d_input_base,
-                   long long   const insize,
+                   long long   const inBufSize,
                    byte*       const d_encoded_base,
-                   long long   const d_encsize);
+                   long long   const encBufSize);
 private:
-  double     _paramv[1];
+  int _initialize(size_t inSize, float errorBound);
+private:
+  int        _eb_e;
+  int        _thr_e;
+  int        _offs;
   int        _blocks;
-  byte*      _dpreencdata;
+  long long  _chunks;
   long long* _d_fullcarry;
   long long  _maxsize;
 };
 
-} // LC_framework
+} // SLEEK

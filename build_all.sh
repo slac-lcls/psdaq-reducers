@@ -10,7 +10,7 @@ set -e
 export PACKAGE_PREFIX=`pwd`
 export INSTDIR=`pwd`/install
 
-cuda_arch="86"
+cuda_arch="86;89;90;100;120"
 cmake_option="RelWithDebInfo"
 force_clean=0
 
@@ -46,16 +46,22 @@ if [ $force_clean == 1 ]; then
 fi
 
 function cmake_build() {
-    cd $1
-    shift
-    mkdir -p build
-    cd build
-    cmake -DCMAKE_INSTALL_PREFIX=$INSTDIR -DCMAKE_PREFIX_PATH=$PACKAGE_PREFIX -DCMAKE_BUILD_TYPE=$cmake_option $@ ..
-    make -j 4 install
-    cd ../..
+    if [ -d $1 ]; then
+        cd $1
+        shift
+        mkdir -p build
+        cd build
+        cmake -DCMAKE_INSTALL_PREFIX=$INSTDIR -DCMAKE_PREFIX_PATH=$PACKAGE_PREFIX -DCMAKE_BUILD_TYPE=$cmake_option $@ ..
+        make -j 4 install
+        cd ../..
+    else
+        echo "$1 not found"
+    fi
 }
 
 cmake_build lc -DCMAKE_CUDA_ARCHITECTURES=$cuda_arch
 cmake_build pfpl -DCMAKE_CUDA_ARCHITECTURES=$cuda_arch
+cmake_build sleek -DCMAKE_CUDA_ARCHITECTURES=$cuda_arch
 cmake_build cuSZ -DPSZ_BACKEND=cuda -DPSZ_BUILD_EXAMPLES=on -DCMAKE_CUDA_ARCHITECTURES=$cuda_arch
 cmake_build cuSZp -DCMAKE_CUDA_ARCHITECTURES=$cuda_arch
+cmake_build eip -DPSZ_BACKEND=cuda -DPSZ_BUILD_EXAMPLES=on -DCMAKE_CUDA_ARCHITECTURES=$cuda_arch
