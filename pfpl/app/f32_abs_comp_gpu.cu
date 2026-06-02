@@ -344,28 +344,28 @@ static void CheckCuda(const int line)
 }
 
 
-PFPL_Compressor::PFPL_Compressor(size_t insize, float errorbound, float threshold) :
+Compressor::Compressor(size_t insize, float errorbound, float threshold) :
   _errorbound(errorbound),
   _threshold (threshold)
 {
   _initialize(insize);
 }
 
-PFPL_Compressor::PFPL_Compressor(size_t insize, float errorbound) :
+Compressor::Compressor(size_t insize, float errorbound) :
   _errorbound(errorbound),
   _threshold (std::numeric_limits<float>::infinity())
 {
   _initialize(insize);
 }
 
-PFPL_Compressor::~PFPL_Compressor()
+Compressor::~Compressor()
 {
   // clean up GPU memory
   cudaFree(_d_fullcarry);
   CheckCuda(__LINE__);
 }
 
-void PFPL_Compressor::_initialize(size_t insize)
+void Compressor::_initialize(size_t insize)
 {
   // get GPU info
   //cudaSetDevice(0);
@@ -393,19 +393,19 @@ void PFPL_Compressor::_initialize(size_t insize)
   }
 }
 
-void PFPL_Compressor::banner() const
+void Compressor::banner() const
 {
   printf("PFPL GPU Single-Precision ABS Compressor\n");
   printf("Copyright 2025 Texas State University\n\n");
 }
 
-void PFPL_Compressor::updateGraph(cudaStream_t      stream,
-                                  unsigned*   const state_d,
-                                  unsigned*   const index_d,
-                                  byte const* const d_input_base,
-                                  long long   const inBufSize,
-                                  byte*       const d_encoded_base,
-                                  long long   const encBufSize)
+void Compressor::updateGraph(cudaStream_t         stream,
+                             unsigned*      const state_d,
+                             unsigned*      const index_d,
+                             uint8_t const* const d_input_base,
+                             long long      const inBufSize,
+                             uint8_t*       const d_encoded_base,
+                             long long      const encBufSize)
 {
   d_reset<<<1, 1, 0, stream>>>();
   const int chunks = (inBufSize + CS - 1) / CS;  // round up

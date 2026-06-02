@@ -302,13 +302,13 @@ static void CheckCuda(const int line)
 // Added by RiC:
 static __global__ void d_prepare(unsigned const* const __restrict__ state,
                                  unsigned const* const __restrict__ index,
-                                 byte     const* const __restrict__ d_input_base,
+                                 uint8_t  const* const __restrict__ d_input_base,
                                  long long       const              insize,
-                                 byte*           const __restrict__ dpreencdata)
+                                 uint8_t*        const __restrict__ dpreencdata)
 {
   if (state && (*state != 1))  return;
 
-  byte const* const __restrict__ d_input = &d_input_base[*index * insize];
+  uint8_t const* const __restrict__ d_input = &d_input_base[*index * insize];
 
   // @todo: Better to do this in steps of 32 or 64 bit words?
   int offset = blockIdx.x * blockDim.x + threadIdx.x;
@@ -320,7 +320,7 @@ static __global__ void d_prepare(unsigned const* const __restrict__ state,
 // End RiC
 
 
-LC_Compressor::LC_Compressor(size_t insize, double paramv)
+Compressor::Compressor(size_t insize, double paramv)
 {
   // get GPU info
   //cudaSetDevice(0);  // This causes CheckCuda in the dtor to report an error
@@ -343,7 +343,7 @@ LC_Compressor::LC_Compressor(size_t insize, double paramv)
   _paramv[0] = paramv;
 }
 
-LC_Compressor::~LC_Compressor()
+Compressor::~Compressor()
 {
   // clean up GPU memory
   cudaFree(_d_fullcarry);
@@ -351,19 +351,19 @@ LC_Compressor::~LC_Compressor()
   CheckCuda(__LINE__);
 }
 
-void LC_Compressor::banner() const
+void Compressor::banner() const
 {
   printf("GPU LC 1.2 Algorithm: QUANT_ABS_0_f32 BIT_4 RZE_1\n");
   printf("Copyright 2024 Texas State University\n\n");
 }
 
-void LC_Compressor::updateGraph(cudaStream_t      stream,
-                                unsigned*   const state_d,
-                                unsigned*   const index_d,
-                                byte const* const d_input_base,
-                                const long long   inBufSize,
-                                byte* const       d_encoded_base,
-                                const long long   encBufSize)
+void Compressor::updateGraph(cudaStream_t         stream,
+                             unsigned*      const state_d,
+                             unsigned*      const index_d,
+                             uint8_t const* const d_input_base,
+                             long long      const inBufSize,
+                             uint8_t*       const d_encoded_base,
+                             long long      const encBufSize)
 {
   //cudaMemcpy(dpreencdata, d_input, inBufSize, cudaMemcpyDeviceToDevice);
   d_prepare<<<_blocks, TPB, 0, stream>>>(state_d, index_d, d_input_base, inBufSize, _dpreencdata);
