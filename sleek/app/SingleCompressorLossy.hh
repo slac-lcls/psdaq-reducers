@@ -1,23 +1,24 @@
 #pragma once
 
+#include <stdint.h>                     // For uint8_t
+
 namespace SLEEK {
 
 class SingleCompressorLossy
 {
-  using byte = unsigned char;
 public:
   SingleCompressorLossy(size_t insize, float errorbound);
   ~SingleCompressorLossy();
 
   void banner() const;
   long long maxSize() const { return _maxsize; }
-  void updateGraph(cudaStream_t      stream,
-                   unsigned*   const state_d,
-                   unsigned*   const index_d,
-                   byte const* const d_input_base,
-                   long long   const inBufSize,
-                   byte*       const d_encoded_base,
-                   long long   const encBufSize);
+  void updateGraph(cudaStream_t         stream,
+                   unsigned*      const state_d,
+                   unsigned*      const index_d,
+                   uint8_t const* const d_input_base,
+                   long long      const inBufSize,
+                   uint8_t*       const d_encoded_base,
+                   long long      const encBufSize);
 private:
   int _initialize(size_t inSize, float errorBound);
 private:

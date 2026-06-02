@@ -559,13 +559,13 @@ void SingleCompressorLossy::banner() const
   printf("Copyright 2026 Texas State University\n\n");
 }
 
-void SingleCompressorLossy::updateGraph(cudaStream_t      stream,
-                                        unsigned*   const state_d,
-                                        unsigned*   const index_d,
-                                        byte const* const d_input_base,
-                                        long long   const inBufSize,
-                                        byte*       const d_encoded_base,
-                                        long long   const encBufSize)
+void SingleCompressorLossy::updateGraph(cudaStream_t         stream,
+                                        unsigned*      const state_d,
+                                        unsigned*      const index_d,
+                                        uint8_t const* const d_input_base,
+                                        long long      const inBufSize,
+                                        uint8_t*       const d_encoded_base,
+                                        long long      const encBufSize)
 {
   d_reset<<<1, 1, 0, stream>>>();
   cudaMemsetAsync(_d_fullcarry, 0, _chunks * sizeof(long long), stream);
