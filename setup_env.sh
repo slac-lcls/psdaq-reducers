@@ -6,3 +6,4 @@ export PFPL_DIR=$RELDIR/install/cmake
 export SLEEK_DIR=$RELDIR/install/cmake
 export CUSZ_DIR=$RELDIR/install/lib64/cmake/CUSZ
 export cuSZp_DIR=$RELDIR/install/cmake
+export EIP_DIR=$RELDIR/install/cmake
