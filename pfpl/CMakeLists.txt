@@ -32,7 +32,7 @@ endif()
 
 # Disable specific warnings (adjust as needed)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -march=native -mno-fma -ffp-contract=off -Wno-unused-result")
-set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -O3 -fmad=false -Xcompiler \"-O3 -march=native -mno-fma -ffp-contract=off\" -Wno-unused-result")
+set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -fmad=false -Xcompiler \"-O3 -march=native -mno-fma -ffp-contract=off\" -Wno-unused-result")
 
 # List of source files
 set(pfpl_SOURCES
