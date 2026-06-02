@@ -13,3 +13,6 @@
 [submodule "sleek/SLEEK"]
 	path = sleek/SLEEK
 	url = https://github.com/burtscher/SLEEK
+[submodule "eip/EIP"]
+	path = eip/EIP
+	url = ssh://github.com/jtian0/EIP
