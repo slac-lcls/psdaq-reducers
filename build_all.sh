@@ -10,11 +10,12 @@ set -e
 export PACKAGE_PREFIX=`pwd`
 export INSTDIR=`pwd`/install
 
-cuda_arch="86;89;90;100;120"
+cuda_arch="86;90"
 cmake_option="RelWithDebInfo"
 force_clean=0
+tpp_build=0
 
-while getopts "a:c:f" opt; do
+while getopts "a:c:ft" opt; do
   case $opt in
     a) cuda_arch="$OPTARG"
        ;;
@@ -22,16 +23,20 @@ while getopts "a:c:f" opt; do
        ;;
     f) force_clean=1
        ;;
+    t) tpp_build=1
+       ;;
     \?) echo "Usage: ${BASH_SOURCE[0]} [-a <CUDA Architecture>] [-c {Release, Debug, RelWithDebInfo}] [-f]"
         echo "  -a  CUDA architecture [$cuda_arch]"
         echo "  -c  Build type [$cmake_option]"
         echo "  -f  Force clean before building"
+        echo "  -t  Don't build third party packages by default"
         exit 1
         ;;
   esac
 done
 
 echo "CMAKE_BUILD_TYPE:" $cmake_option
+echo "CMAKE_CUDA_ARCHITECTURES:" $cuda_arch
 
 if [ $force_clean == 1 ]; then
     echo "force_clean"
@@ -55,13 +60,40 @@ function cmake_build() {
         make -j 4 install
         cd ../..
     else
-        echo "$1 not found"
+        echo "Reducer $1 not found"
+    fi
+}
+
+function cmake_build_3rd() {
+    if [ -d $1 ]; then
+        cd $1
+        shift
+        if [ -d $1 ]; then
+            tpp=$1
+            cd $1
+            shift
+            mkdir -p build
+            cd build
+            cmake -DCMAKE_INSTALL_PREFIX=$INSTDIR/$tpp -DCMAKE_PREFIX_PATH=$PACKAGE_PREFIX -DCMAKE_BUILD_TYPE=$cmake_option $@ ..
+            make -j 4 install
+            cd ../..
+        else
+            echo "Third party package $2 not found"
+        fi
+        cd ..
+    else
+        echo "Reducer $1 not found"
     fi
 }
 
 cmake_build lc -DCMAKE_CUDA_ARCHITECTURES=$cuda_arch
 cmake_build pfpl -DCMAKE_CUDA_ARCHITECTURES=$cuda_arch
 cmake_build sleek -DCMAKE_CUDA_ARCHITECTURES=$cuda_arch
-cmake_build cuSZ -DPSZ_BACKEND=cuda -DPSZ_BUILD_EXAMPLES=on -DCMAKE_CUDA_ARCHITECTURES=$cuda_arch
+# Is CuSZ from this repo obsolete?
+#cmake_build cuSZ -DPSZ_BACKEND=cuda -DPSZ_BUILD_EXAMPLES=on -DCMAKE_CUDA_ARCHITECTURES=$cuda_arch
 cmake_build cuSZp -DCMAKE_CUDA_ARCHITECTURES=$cuda_arch
-cmake_build eip -DPSZ_BACKEND=cuda -DPSZ_BUILD_EXAMPLES=on -DCMAKE_CUDA_ARCHITECTURES=$cuda_arch
+# EIP also builds a cuSZ
+if [ $tpp_build == 1 ]; then
+    cmake_build_3rd eip EIP -DPSZ_BACKEND=cuda -DPSZ_BUILD_EXAMPLES=on -DCMAKE_CUDA_ARCHITECTURES=$cuda_arch
+fi
+cmake_build eip -DCMAKE_CUDA_ARCHITECTURES=$cuda_arch
