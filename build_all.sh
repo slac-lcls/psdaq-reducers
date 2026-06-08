@@ -35,6 +35,32 @@ while getopts "a:c:ft" opt; do
   esac
 done
 
+echo "Applying patches..."
+for d in ./patches/* ; do
+    for p in "$d/"* ; do
+        echo "Applying $p"
+        p=$(readlink -f "$p")
+        if ! pushd $(basename "$d") > /dev/null ; then
+            break
+        fi
+
+        # Allow errors for this
+        set +e
+        O=$(patch -p1 -N < "$p")
+        if [ $? -ne 0 ]; then
+            # Patch always gives us an error code, even for previously applied patches,
+            # so we have to parse stdout :(
+            if ! echo "$O" | grep "Reversed " ; then
+                echo "Patch ${p} failed to apply"
+                exit 1
+            fi
+        fi
+        set -e
+
+        popd > /dev/null
+    done
+done
+
 echo "CMAKE_BUILD_TYPE:" $cmake_option
 echo "CMAKE_CUDA_ARCHITECTURES:" $cuda_arch
 
