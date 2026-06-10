@@ -119,7 +119,8 @@ cmake_build sleek -DCMAKE_CUDA_ARCHITECTURES=$cuda_arch
 #cmake_build cuSZ -DPSZ_BACKEND=cuda -DPSZ_BUILD_EXAMPLES=on -DCMAKE_CUDA_ARCHITECTURES=$cuda_arch
 cmake_build cuSZp -DCMAKE_CUDA_ARCHITECTURES=$cuda_arch
 # EIP also builds a cuSZ
-if [ $tpp_build == 1 ]; then
-    cmake_build_3rd eip EIP -DPSZ_BACKEND=cuda -DPSZ_BUILD_EXAMPLES=on -DCMAKE_CUDA_ARCHITECTURES=$cuda_arch
-fi
-cmake_build eip -DCMAKE_CUDA_ARCHITECTURES=$cuda_arch
+# 6/9/26: EIP commented out as it isn't ready for use in the DAQ yet
+#if [ $tpp_build == 1 ]; then
+#    cmake_build_3rd eip EIP -DPSZ_BACKEND=cuda -DPSZ_BUILD_EXAMPLES=on -DCMAKE_CUDA_ARCHITECTURES=$cuda_arch
+#fi
+#cmake_build eip -DCMAKE_CUDA_ARCHITECTURES=$cuda_arch
